@@ -12,6 +12,6 @@ class Controller extends BaseController
     protected $resp = array();
     public function __construct()
     {
-        $this->resp = ['status'=>false, 'code'=>201, 'message'=>'', 'data'=>''];
+        $this->resp = ['status'=>true, 'code'=>200, 'message'=>'', 'data'=>''];
     }
 }

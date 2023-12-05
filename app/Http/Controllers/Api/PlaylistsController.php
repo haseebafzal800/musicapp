@@ -12,11 +12,9 @@ class PlaylistsController extends Controller
 {
     function index()
     {
-        $Playlist = Playlist::all();
-        return response()->json([
-            'data' => $Playlist,
-            'type' => 'success'
-        ]);
+        $playlist = Playlist::all();
+        $this->resp['data'] = $playlist;
+        return json_response($this->resp);
     }
     function store(Request $request)
     {
@@ -26,26 +24,26 @@ class PlaylistsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'type' => 'error',
-                'message' => $validator->errors()
-            ], 422);
+            $this->resp = ['status'=>false, 'code'=>201, 'message'=>$validator->errors(), 'data'=>''];
         }
-
-        $validatedData = $validator->validated();
-        $Playlist = Playlist::create($validatedData);
-        return response()->json([
-            'data' => $Playlist,
-            'type' => 'success'
-        ]);
+        else{
+            $validatedData = $validator->validated();
+            $Playlist = Playlist::create($validatedData);
+            $this->resp['data'] = $Playlist;
+        }
+        return json_response($this->resp);
     }
+    
+    
     public function edit($id)
     {
-        $Playlist = Playlist::find($id);
-        return response()->json([
-            'data' => $Playlist,
-            'type' => 'success'
-        ]);
+        if($id){
+            $Playlist = Playlist::find($id);
+            $this->resp['data'] = $Playlist;
+        }else{
+            $this->resp = ['status'=>false, 'code'=>201, 'message'=>'Data not found', 'data'=>''];
+        }
+        return json_response($this->resp);
     }
     public function update(Request $request)
     {
@@ -54,32 +52,35 @@ class PlaylistsController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
             'status' => 'required',
+            'id' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'type' => 'error',
-                'message' => $validator->errors()
-            ], 422);
+            $this->resp = ['status'=>false, 'code'=>201, 'message'=>$validator->errors(), 'data'=>''];
         }
-        
-        $Playlist = Playlist::where('id', $input['id'])->update([
-            'title'    => $input['title'],
-            'status'    => $input['status'],
-        ]);
-        $Playlist_data = Playlist::find($input['id']);
-        return response()->json([
-            'data' => $Playlist_data,
-            'type' => 'success'
-        ]);
+        else{
+            $Playlist = Playlist::where('id', $input['id'])->update($request->all());
+            $Playlist_data = Playlist::find($input['id']);
+            $this->resp['data'] = $Playlist_data;
+        }
+        return json_response($this->resp);
     }
+
     public function delete($id)
     {
-        $Playlist = Playlist::find($id);
-        $Playlist->delete();
-        return response()->json([
-            'data' => $Playlist,
-            'type' => 'success'
-        ]);
+        if($id){
+            $Playlist = Playlist::find($id);
+            if($Playlist){
+                $Playlist->delete();
+                $this->resp['data'] = $Playlist;
+            }else{
+                $this->resp = ['status'=>false, 'code'=>201, 'message'=>'Data not found', 'data'=>''];
+            }
+        }else{
+            $this->resp = ['status'=>false, 'code'=>201, 'message'=>'Data not found', 'data'=>''];
+        }
+        return json_response($this->resp);
+
     }
 }
+
