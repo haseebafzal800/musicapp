@@ -15,7 +15,8 @@ class UsersController extends Controller
             $user = Auth::user();
 
             $data = User::where('id', $user->id)->first();
-            if($data->is_online=='1'){
+            if(0=='1'){
+            // if($data->is_online=='1'){
                 $this->resp = ['status'=>false, 'code'=>201, 'message'=>'Already loggedin on another device', 'data'=>null];
             }else{
                 $data->is_online = '1';
