@@ -139,7 +139,7 @@
           </li>
           @endif
           @if (Gate::check('album-list'))
-          <li class="nav-item {{$albumsOpening??''}} {{$albumsOpend??''}}">
+          <?php /*<li class="nav-item {{$albumsOpening??''}} {{$albumsOpend??''}}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
@@ -176,7 +176,7 @@
               </li>
               
             </ul>
-          </li>
+          </li> */ ?>
           @endif
           @if (Gate::check('playlist-list'))
           <li class="nav-item {{$playlistsOpening??''}} {{$playlistsOpend??''}}">
