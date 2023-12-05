@@ -11,16 +11,19 @@ class UsersController extends Controller
 {
     public function login(Request $request)
     {
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password'), 'status'=>'active'])) {
             $user = Auth::user();
 
             $data = User::where('id', $user->id)->first();
-
-            $data['api_token'] = $user->createToken('auth_token')->plainTextToken;
-            $this->resp = ['status'=>true, 'code'=>200, 'message'=>'Login Successfully', 'data'=>$data];
-            
+            if($data->is_online=='1'){
+                $this->resp = ['status'=>false, 'code'=>201, 'message'=>'Already loggedin on another device', 'data'=>null];
+            }else{
+                $data->is_online = '1';
+                $data->save();
+                $data['api_token'] = $user->createToken('auth_token')->plainTextToken;
+                $this->resp = ['status'=>true, 'code'=>200, 'message'=>'Login Successfully', 'data'=>$data];
+            }
         } else {
-            
             $this->resp = ['status'=>false, 'code'=>201, 'message'=>'These credentials do not match our records.', 'data'=>''];
         }
         return json_response($this->resp);

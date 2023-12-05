@@ -33,11 +33,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            if(Auth::user()->hasRole('Admin')){
-                $data = User::orderBy('id','DESC')->with('roles')->get();
-            }elseif(Auth::user()->hasRole('Client')){
-                $data = User::orderBy('id','DESC')->with('roles')->where('client_id', Auth::user()->client_id)->get();
-            }
+            $data = User::orderBy('id','DESC')->with('roles')->get();
             // echo "<pre>"; print_r($data); die;
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('roles', function ($row) {
@@ -62,12 +58,12 @@ class UserController extends Controller
                         }elseif($row->client_id == '' && $row->is_approved=='ban'){
                         $btn .= ' <a class="btn btn-xs btn-danger" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-ban"></i></a>';
                         }else{
-                            $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.approved',$row->id).'"><i class="fas fa-check"></i></a>';
+                            $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.approve',$row->id).'"><i class="fas fa-check"></i></a>';
                         $btn .= ' <a class="btn btn-xs btn-danger" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-ban"></i></a>';
                         }
                     }
                     $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.edit',$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
-                    $url = url("/admin/users/destroy/".$row->id);
+                    $url = route("users.destroy", $row->id);
                     $btn .= ' <a href="javascript:void(0)" onclick="DeleteMe(this, '."'".$url."'".')" class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i></a>';
                        
                     return $btn;
@@ -127,10 +123,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id): View
+    // public function show($id): View
+    // {
+    //     $user = User::find($id);
+    //     return view('admin.users.show',compact('user'));
+    // }
+    public function show($id)
     {
         $user = User::find($id);
-        return view('admin.users.show',compact('user'));
+        $pageTitle = 'View User';
+        $userListActive = 'active';
+        $userOpening = 'menu-is-opening';
+        $userOpend = 'menu-open';
+        return view('admin.users.show',compact('user', 'pageTitle', 'userListActive', 'userOpening', 'userOpend'));
     }
     
     /**
@@ -155,6 +160,41 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function change_password()
+    {
+        $user = User::find(Auth::user()->id);
+        $pageTitle = 'Change Password';
+        $profileActive = 'active';
+        $profileOpening = 'menu-is-opening';
+        $profileOpend = 'menu-open';
+    
+        return view('admin.users.change-password',compact('user', 'pageTitle', 'profileActive', 'profileOpening', 'profileOpend'));
+    }
+    public function update_password(Request $request){
+        $validator = Validator::make($request->all(), [
+            'old-password' => 'required',
+            'password' => 'required|string|min:8|same:confirm-password',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect('change-password')
+            ->withErrors($validator)
+            ->withInput();
+        }
+        $user = User::find($request->id);
+        if (Hash::check($request->input('old-password'), $user->password)) {
+            // Update the user's password with the new password
+            $user->password = Hash::make($request->input('password'));
+            $user->save();
+
+            // Redirect to a success page or return a response
+            return redirect()->back()->with('success', 'Password changed successfully');
+        } else {
+            // If the current password is incorrect, show an error message
+            return redirect()->back()->withErrors(['current_password' => 'The current password is incorrect'])->withInput();
+        }
+
+    }
     public function update(Request $request, $id): RedirectResponse
     {
         $this->validate($request, [
@@ -187,11 +227,42 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): RedirectResponse
+    // public function destroy($id): RedirectResponse
+    // {
+    //     User::find($id)->delete();
+    //     return redirect()->route('users.index')
+    //                     ->with('success','User deleted successfully');
+    // }
+    public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success','User deleted successfully');
+        if(User::find($id)->delete()){
+            return 'ok';
+        }else{
+            return 'notok';
+        }
+    }
+
+    public function approved($id)
+    {
+
+        // $settings = AppSettingsModel::create();
+        $user = User::find($id);
+        // $user->client_id = $settings->id;
+        $user->is_approved = 'on';
+        $user->save();
+        
+        $roles = ['User'];
+        $user->assignRole($roles);
+        return redirect()->route('users.index')->with('success','User created successfully');
+    }
+
+    public function unapprove($id)
+    {
+        $user = User::find($id);
+        $user->is_approved = 'ban';
+        $user->save();
+        
+        return redirect()->route('users.index')->with('success','User updated successfully');
     }
 }
 

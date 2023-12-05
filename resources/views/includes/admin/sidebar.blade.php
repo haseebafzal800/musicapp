@@ -42,12 +42,12 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item {{$dashboardOpening ?? ''}}  {{$dashboardOpend ?? ''}}">
+          <!-- <li class="nav-item {{$dashboardOpening ?? ''}}  {{$dashboardOpend ?? ''}}">
             <a href="{{@url('/chat')}}" class="nav-link {{$dashboardActive??''}}">
               <i class="far fa-circle nav-icon"></i>
               <p>Chat</p>
             </a>
-          </li>
+          </li> -->
           @if (Gate::check('role-list') || Gate::check('role-create'))
           <li class="nav-item {{$roleOpening??''}} {{$roleOpend??''}}">
             <a href="#" class="nav-link ">
@@ -138,6 +138,66 @@
             </ul>
           </li>
           @endif
+          @if (Gate::check('album-list'))
+          <li class="nav-item {{$albumsOpening??''}} {{$albumsOpend??''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Albums
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{@url('/admin/albums')}}" class="nav-link {{$albumsListActive??''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          @endif
+          @if (Gate::check('generous-list'))
+          <li class="nav-item {{$generousOpening??''}} {{$generousOpend??''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+              Generous
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{@url('/admin/generous')}}" class="nav-link {{$generousListActive??''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          @endif
+          @if (Gate::check('playlist-list'))
+          <li class="nav-item {{$playlistsOpening??''}} {{$playlistsOpend??''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Playlists
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{@url('/admin/playlists')}}" class="nav-link {{$playlistsListActive??''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          @endif
           @if (Gate::check('notification-list'))
           <li class="nav-item {{$notificationsOpening??''}} {{$notificationsOpend??''}}">
             <a href="#" class="nav-link">
@@ -183,7 +243,7 @@
           @endcan
 
           <li class="nav-item {{$profileOpening??''}} {{$profileOpend??''}}">
-            <a href="{{@url('/change-password')}}" class="nav-link {{$profile??''}}">
+            <a href="{{@url('/admin/users/change-password')}}" class="nav-link {{$profile??''}}">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Change Password

@@ -12,12 +12,12 @@
                     <div class="pull-right">
                         <a class="btn btn-primary btn-sm" href="{{ route('users.index') }}"> Back</a>
                         @can('approve-user')
-                            @if($user->client_id > 0 && $user->is_approved=='on')
+                            @if($user->is_approved=='on')
                                 <a class="btn btn-sm btn-primary" href="{{ route('users.unapprove',$user->id) }}">Approved</i></a>
-                            @elseif($user->client_id == '' && $user->is_approved=='ban')
+                            @elseif($user->is_approved=='ban')
                                 <a class="btn btn-sm btn-danger" href="{{ route('users.unapprove',$user->id) }}">Rejected</i></a>
                             @else
-                                <a class="btn btn-sm btn-primary" href="{{ route('users.approved',$user->id) }}">Approve</i></a>
+                                <a class="btn btn-sm btn-primary" href="{{ route('users.approve',$user->id) }}">Approve</i></a>
                                 <a class="btn btn-sm btn-danger" href="{{ route('users.unapprove',$user->id) }}">Reject</a>
                             @endif
                         @endcan
