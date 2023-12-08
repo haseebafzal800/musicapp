@@ -5,35 +5,68 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Playlist;
+use App\Models\Song;
 
-class PlaylistsController extends Controller
+class SongsController extends Controller
 {
     function index()
     {
-        $this->data = Playlist::where('user_id', auth()->user()->id)->get();
-        if($this->data)
+        $perPage = request('per_page', 10);
+        $this->data = Song::where('user_id', auth()->user()->id)->paginate($perPage);
+        if($this->data){
             $this->responsee(true);
-        else
+        }
+        else{
             $this->responsee(false, $this->d_err);
+        }
         return json_response($this->resp);
+
+        // $paginationData = [
+        //     'current_page' => $songs->currentPage(),
+        //     'per_page' => $songs->perPage(),
+        //     'total' => $songs->total(),
+        //     'last_page' => $songs->lastPage(),
+        // ];
+
+        // $links = [
+        //     'first' => $songs->url(1),
+        //     'last' => $songs->url($songs->lastPage()),
+        //     'prev' => $songs->previousPageUrl(),
+        //     'next' => $songs->nextPageUrl(),
+        // ];
+
+        // $meta = [
+        //     'pagination' => $paginationData,
+        // ];
+        // $this->resp['data'] = ['songs' => $songs, 'links' => $links, 'meta' => $meta];
     }
+    // function index()
+    // {
+    //     $data = Song::where('user_id', auth()->user()->id)->get();
+    //     // $data = Song::where('user_id', auth()->user()->id)->with('user')->orderBy('id','DESC')->get();
+    //     $this->resp['data'] = $data;
+    //     return json_response($this->resp);
+    // }
     function store(Request $request)
     {
         $request->merge(['user_id' => auth()->user()->id]);
+        
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
             'status' => 'required',
+            'user_id' => 'required',
         ]);
 
         if ($validator->fails())
             $this->responsee(false, $validator->errors());
         else{
-            $this->data = Playlist::create($request->all());
-            if($this->data)
+            $this->data = Song::create($request->all());
+            if($this->data){
                 $this->responsee(true);
-            else
-                $this->responsee(false, $this->d_err);
+            }
+            else{
+                $this->responsee(false);
+            }
         }
         return json_response($this->resp);
     }
@@ -42,7 +75,7 @@ class PlaylistsController extends Controller
     public function edit($id)
     {
         if($id){
-            $this->data = Playlist::where('user_id', auth()->user()->id)->find($id);
+            $this->data = Song::where('user_id', auth()->user()->id)->find($id);
             if($this->data)
                 $this->responsee(true);
             else
@@ -51,6 +84,7 @@ class PlaylistsController extends Controller
             $this->responsee(false, $this->id_err);
         return json_response($this->resp);
     }
+
     public function update(Request $request)
     {
         $input = $request->all();
@@ -60,12 +94,12 @@ class PlaylistsController extends Controller
         ]);
 
         if ($validator->fails())
-            $this->responsee(false, $validator->errors());
+            $this->responsee(false,$validator->errors());
         else{
-            $this->data = Playlist::where('user_id', auth()->user()->id)->where('id', $request->id)->first();
+            $this->data = Song::where('user_id', auth()->user()->id)->find($request->id);
             if($this->data){
                 if($this->data->update($request->all()))
-                   $this->responsee(true);
+                    $this->responsee(true);
                 else
                     $this->responsee(false, $this->w_err);
             }else
@@ -73,11 +107,10 @@ class PlaylistsController extends Controller
         }
         return json_response($this->resp);
     }
-
     public function delete($id)
     {
         if($id){
-            $this->data = Playlist::find($id);
+            $this->data = Song::where('user_id', auth()->user()->id)->find($id);
             if($this->data){
                 if($this->data->delete())
                     $this->responsee(true);

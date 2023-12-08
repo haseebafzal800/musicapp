@@ -50,6 +50,11 @@ class User extends Authenticatable
     ];
 
     public $approved;
+
+    public function songs()
+    {
+        return $this->hasMany(App\Models\Song::class);
+    }
 }
 
 ?>

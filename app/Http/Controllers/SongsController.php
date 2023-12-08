@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DataTables;
-use App\Models\Songs;
+use App\Models\Song;
 
 class SongsController extends Controller
 {
     function index(Request $request){
         if ($request->ajax()) {
-            $data = Playlist::orderBy('id','DESC')->get();
-            // echo "<pre>"; print_r($data); die;
+            $data = Song::with('user')->orderBy('id','DESC')->get();
+            // $data = Song::orderBy('id','DESC')->get();
+            echo "<pre>"; print_r($data); die;
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('status', function ($row) {
                 $status='';
@@ -44,7 +45,7 @@ class SongsController extends Controller
     }
     public function edit($id)
     {
-        $playlist = Playlist::find($id);
+        $playlist = Song::find($id);
         return view('admin.Playlist.edit', compact('playlist'));
     }
     public function update(Request $request)
@@ -56,7 +57,7 @@ class SongsController extends Controller
             'status' => 'required',
         ]);
         
-        $Playlist = Playlist::where('id', $input['id'])->update([
+        $Playlist = Song::where('id', $input['id'])->update([
             'title'    => $input['title'],
             'status'    => $input['status'],
         ]);
@@ -64,7 +65,7 @@ class SongsController extends Controller
     }
     public function delete($id)
     {
-        if(Playlist::find($id)->delete()){
+        if(Song::find($id)->delete()){
             return 'ok';
         }else{
             return 'notok';
