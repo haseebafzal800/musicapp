@@ -63,4 +63,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Recent played
     Route::post('/recently-played', [RecentlyPlayedController::class, 'store']);
     Route::get('/recently-played', [RecentlyPlayedController::class, 'index']);
+    Route::get('/recently-played/clear/{id?}', [RecentlyPlayedController::class, 'deleteRecentPlayed']);
 });

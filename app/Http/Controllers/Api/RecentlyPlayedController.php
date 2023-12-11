@@ -62,4 +62,23 @@ class RecentlyPlayedController extends Controller
             $this->responsee(false, $this->d_err);
         return json_response($this->resp, $this->httpCode);
     }
+
+    public function deleteRecentPlayed($id=null){
+        $user = auth()->user();
+        if($id){
+            $this->data = $user->recentlyPlayed()->where('song_id', $id)->delete();
+            if($this->data)
+                $this->responsee(true);
+            else
+                $this->responsee(false, $this->w_err);
+        }
+        else{
+            $this->data = $user->recentlyPlayed()->delete();
+            if($this->data)
+                $this->responsee(true);
+            else
+                $this->responsee(false, $this->w_err);
+        }
+        return json_response($this->resp, $this->httpCode);
+    }
 }
