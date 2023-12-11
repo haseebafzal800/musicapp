@@ -27,22 +27,22 @@
     </div>
     @endif
 
- <form method="POST" action="{{ route('playlist.update') }}">
+ <form method="POST" action="{{ route('song.update') }}">
  @csrf
- <input name="id" type="hidden" class="form-control" value="{{$playlist->id}}">
+ <input name="id" type="hidden" class="form-control" value="{{$song->id}}">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6">
             <div class="form-group">
                 <label>Title:</label>
-                <input name="title" class="form-control" value="{{$playlist->title}}">
+                <input name="title" class="form-control" value="{{$song->title}}">
             </div>
         </div>
         <div class="col-md-6">
         <div class="form-group">
                     <label>Select:</label>
                     <select class="form-control" name="status">
-                      <option value="1" {{$playlist->status==1? 'selected':'' }}>Active</option>
-                      <option value="0" {{$playlist->status==0? 'selected':'' }}>InActive</option>
+                      <option value="1" {{$song->status==1? 'selected':'' }}>Active</option>
+                      <option value="0" {{$song->status==0? 'selected':'' }}>InActive</option>
                     </select>
                   </div>
         </div>

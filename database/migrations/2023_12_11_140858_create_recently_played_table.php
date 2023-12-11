@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('playlists', function (Blueprint $table) {
+        Schema::create('recently_played', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable()->length(255);
-            $table->Integer('status')->default(1)->length(11);
-            $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('song_id');
+            $table->timestamps(); // Timestamp of when the song was played
+
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('playlists');
+        Schema::dropIfExists('recently_played');
     }
 };

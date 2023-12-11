@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GenerousController;
 use App\Http\Controllers\PlaylistsController;
+use App\Http\Controllers\SongsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('admin/playlist/{id}', [PlaylistsController::class, 'edit'])->name('playlist.edit');
     Route::post('admin/playlist-update', [PlaylistsController::class, 'update'])->name('playlist.update');
     Route::get('admin/playlist-delete/{id}', [PlaylistsController::class, 'delete'])->name('playlist.delete');
+    //Songs
+    Route::get('admin/songs', [SongsController::class, 'index'])->name('song.list');
+    Route::get('admin/song/{id}', [SongsController::class, 'edit'])->name('song.edit');
+    Route::post('admin/song-update', [SongsController::class, 'update'])->name('song.update');
+    Route::get('admin/song-delete/{id}', [SongsController::class, 'delete'])->name('song.delete');
 
 });
 ?>

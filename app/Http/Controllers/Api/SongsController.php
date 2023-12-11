@@ -53,7 +53,6 @@ class SongsController extends Controller
         
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
-            'status' => 'required',
             'user_id' => 'required',
         ]);
 

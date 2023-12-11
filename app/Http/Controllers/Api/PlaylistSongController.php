@@ -8,6 +8,7 @@ use App\Models\Playlist;
 use App\Models\PlaylistSong;
 use App\Models\Song;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\UniquePlaylistSong;
 
 class PlaylistSongController extends Controller
 {
@@ -35,7 +36,11 @@ class PlaylistSongController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'playlist_id' => 'required|numeric',
-            'song_id' => 'required|numeric',
+            'song_id' => [
+                'required',
+                'numeric',
+                new UniquePlaylistSong($request->playlist_id),
+            ],
         ]);
 
         if ($validator->fails())
@@ -44,13 +49,12 @@ class PlaylistSongController extends Controller
             $playlist = Playlist::findOrFail($request->playlist_id);
             if($playlist){
                 $song = Song::findOrFail($request->song_id);
-                if($song->count()){
-                    $this->data = $playlist->songs()->attach($request->song_id);
-                    if($this->data)
-                        // $this->responsee(false, $this->data);
-                        $this->responsee(true);
+                if($song){
+                    $this->data = $playlist->songs()->attach($song->id);
+                    // if($playlist->songs()->attach($song->id))
+                    $this->responsee(true);
                     // else
-                    //     $this->responsee(false, $this->w_err);
+                        // $this->responsee(false, $this->w_err);
                 }else{
                     $this->d_err = 'Error! Song not found';
                     $this->responsee(false, $this->d_err);
@@ -65,9 +69,9 @@ class PlaylistSongController extends Controller
     public function delete($playlist_id, $song_id)
     {
         if($playlist_id && $song_id){
-            $playlist = Playlist::find($id);
+            $playlist = Playlist::find($playlist_id);
             if($playlist){
-                if($this->data->delete())
+                if($playlist->songs()->detach($song_id))
                     $this->responsee(true);
                 else
                     $this->responsee(false, $this->w_err);
@@ -75,16 +79,6 @@ class PlaylistSongController extends Controller
                 $this->responsee(false, $this->d_err);
         }else
             $this->responsee(false, $this->id_err);
-        return json_response($this->resp, $this->httpCode);
-    }
-    public function destroy($playlistId, $songId)
-    {
-        $playlist = Playlist::findOrFail($playlistId);
-
-        // Detach the song from the playlist
-        $playlist->songs()->detach($songId);
-
-        return response()->json(['message' => 'Song removed from playlist successfully']);
         return json_response($this->resp, $this->httpCode);
     }
 }

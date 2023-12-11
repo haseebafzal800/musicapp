@@ -198,6 +198,26 @@
             </ul>
           </li>
           @endif
+          @if (Gate::check('song-list'))
+          <li class="nav-item {{$songsOpening??''}} {{$songsOpend??''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Songs
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{@url('/admin/songs')}}" class="nav-link {{$songsListActive??''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          @endif
           @if (Gate::check('notification-list'))
           <li class="nav-item {{$notificationsOpening??''}} {{$notificationsOpend??''}}">
             <a href="#" class="nav-link">

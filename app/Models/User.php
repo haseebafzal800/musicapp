@@ -55,6 +55,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(App\Models\Song::class);
     }
+    public function playlists()
+    {
+        return $this->hasMany(Playlist::class);
+    }
+    public function recentlyPlayed()
+    {
+        return $this->hasMany(RecentlyPlayed::class, 'user_id');
+    }
 }
 
 ?>

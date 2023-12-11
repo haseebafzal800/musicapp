@@ -26,6 +26,7 @@
                         <th>ID</th>
                         <th>Title</th>
                         <th>User</th>
+                        <th>Playlist</th>
                         <th width="140px">Action</th>
                     </tr>
                 </thead>
@@ -37,6 +38,7 @@
                       <th>ID</th>
                       <th>Title</th>
                       <th>User</th>
+                      <th>Playlist</th>
                       <th width="100px">Action</th>
                   </tr>
                   </tfoot>
@@ -65,12 +67,13 @@
           
             processing: true,
             serverSide: true,
-            ajax: '{{ @url("/admin/playlists") }}',
+            ajax: '{{ @url("/admin/songs") }}',
             columns: [
                 {data: 'id', name: 'id'},
                 // {data: 'rownum', name: 'rownum', searchable: false },
                 {data: 'title', name: 'title'},
                 {data: 'username', name: 'username'},
+                {data: 'playlists', name: 'playlists'},
                 {data: 'action', name: 'action', orderable: false, searchable: true},
             ]
         });

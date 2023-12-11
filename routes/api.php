@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\GenerousController;
 use App\Http\Controllers\Api\PlaylistsController;
 use App\Http\Controllers\Api\SongsController;
 use App\Http\Controllers\Api\PlaylistSongController;
+use App\Http\Controllers\Api\RecentlyPlayedController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,5 +58,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/playlists/{playlistId}/songs', [PlaylistSongController::class, 'index']);
     Route::post('/playlists/{playlistId}/songs', [PlaylistSongController::class, 'store']);
-    Route::delete('/playlists/{playlistId}/songs/{songId}', [PlaylistSongController::class, 'destroy']);
+    Route::get('/playlists/{playlistId}/songs/{songId}', [PlaylistSongController::class, 'delete']);
+    
+    //Recent played
+    Route::post('/recently-played', [RecentlyPlayedController::class, 'store']);
+    Route::get('/recently-played', [RecentlyPlayedController::class, 'index']);
 });

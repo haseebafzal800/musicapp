@@ -23,7 +23,6 @@ class PlaylistsController extends Controller
         $request->merge(['user_id' => auth()->user()->id]);
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
-            'status' => 'required',
         ]);
 
         if ($validator->fails())
