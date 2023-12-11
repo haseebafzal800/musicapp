@@ -19,7 +19,7 @@ class SongsController extends Controller
         else{
             $this->responsee(false, $this->d_err);
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
 
         // $paginationData = [
         //     'current_page' => $songs->currentPage(),
@@ -45,7 +45,7 @@ class SongsController extends Controller
     //     $data = Song::where('user_id', auth()->user()->id)->get();
     //     // $data = Song::where('user_id', auth()->user()->id)->with('user')->orderBy('id','DESC')->get();
     //     $this->resp['data'] = $data;
-    //     return json_response($this->resp);
+    //     return json_response($this->resp, $this->httpCode);
     // }
     function store(Request $request)
     {
@@ -68,7 +68,7 @@ class SongsController extends Controller
                 $this->responsee(false);
             }
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
     
     
@@ -82,7 +82,7 @@ class SongsController extends Controller
                 $this->responsee(false, $this->d_err);
         }else
             $this->responsee(false, $this->id_err);
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
 
     public function update(Request $request)
@@ -105,7 +105,7 @@ class SongsController extends Controller
             }else
                 $this->responsee(false, $this->d_err);
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
     public function delete($id)
     {
@@ -120,7 +120,7 @@ class SongsController extends Controller
                 $this->responsee(false, $this->d_err);
         }else
             $this->responsee(false, $this->id_err);
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
 }
 

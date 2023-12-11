@@ -22,6 +22,7 @@ class Controller extends BaseController
     protected $s_arr = array();
     protected $e_arr = array();
     protected $data;
+    protected $httpCode;
     public function __construct()
     {
         $this->s_arr = ['status'=>$this->s_status, 'code'=>$this->s_code, 'message'=>$this->s_msg, 'data'=>''];
@@ -31,10 +32,12 @@ class Controller extends BaseController
     function responsee($signal = true, $msg = ''){
         if($signal){
             $this->s_arr['data'] = $this->data;
+            $this->httpCode = $this->s_code;
             return $this->resp = $this->s_arr;
         }
         else{
             $this->e_arr['message'] = $msg ?? $this->w_err;
+            $this->httpCode = $this->e_code;
             return $this->resp = $this->e_arr;
         }
     }

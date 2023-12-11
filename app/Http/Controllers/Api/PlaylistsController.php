@@ -16,7 +16,7 @@ class PlaylistsController extends Controller
             $this->responsee(true);
         else
             $this->responsee(false, $this->d_err);
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
     function store(Request $request)
     {
@@ -35,7 +35,7 @@ class PlaylistsController extends Controller
             else
                 $this->responsee(false, $this->d_err);
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
     
     
@@ -49,7 +49,7 @@ class PlaylistsController extends Controller
                 $this->responsee(false, $this->d_err);
         }else
             $this->responsee(false, $this->id_err);
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
     public function update(Request $request)
     {
@@ -71,7 +71,7 @@ class PlaylistsController extends Controller
             }else
                 $this->responsee(false, $this->d_err);
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
 
     public function delete($id)
@@ -87,7 +87,7 @@ class PlaylistsController extends Controller
                 $this->responsee(false, $this->d_err);
         }else
             $this->responsee(false, $this->id_err);
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
 }
 

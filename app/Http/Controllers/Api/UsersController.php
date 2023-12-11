@@ -17,30 +17,29 @@ class UsersController extends Controller
             $data = User::where('id', $user->id)->first();
             if(0=='1'){
             // if($data->is_online=='1'){
-                $this->resp = ['status'=>false, 'code'=>201, 'message'=>'Already loggedin on another device', 'data'=>null];
+                // $this->data = $songs;
+                $this->w_err = 'Already loggedin on another device';
+                $this->responsee(false, $this->w_err);
             }else{
                 $data->is_online = '1';
                 $data->save();
                 $data['api_token'] = $user->createToken('auth_token')->plainTextToken;
-                $this->resp = ['status'=>true, 'code'=>200, 'message'=>'Login Successfully', 'data'=>$data];
+                $this->data = $data;
+                $this->responsee(true);
             }
         } else {
-            $this->resp = ['status'=>false, 'code'=>201, 'message'=>'These credentials do not match our records.', 'data'=>''];
+            $this->d_err = 'These credentials do not match our records.';
+            $this->responsee(false, $this->d_err);
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
 
     public function logout(Request $request)
     {
         if ($request->is('api*')) {
             $request->user()->currentAccessToken()->delete();
-            $this->resp = [
-                'status' => true,
-                'data' => null,
-                'message' => "Successfully Logging out",
-                'code'=>200,
-            ];
-            return json_response($this->resp);
+            $this->responsee(true);
+            return json_response($this->resp, $this->httpCode);
         }
     }
 }

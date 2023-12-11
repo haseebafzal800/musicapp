@@ -28,7 +28,7 @@ class PlaylistSongController extends Controller
             $this->d_err = 'Playlist not found';
             $this->responsee(false, $this->d_err);
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
 
     public function store(Request $request, $playlistId)
@@ -60,7 +60,7 @@ class PlaylistSongController extends Controller
                 $this->responsee(false, $this->d_err);
             }
         }
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
     public function delete($playlist_id, $song_id)
     {
@@ -75,7 +75,7 @@ class PlaylistSongController extends Controller
                 $this->responsee(false, $this->d_err);
         }else
             $this->responsee(false, $this->id_err);
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
     public function destroy($playlistId, $songId)
     {
@@ -85,6 +85,6 @@ class PlaylistSongController extends Controller
         $playlist->songs()->detach($songId);
 
         return response()->json(['message' => 'Song removed from playlist successfully']);
-        return json_response($this->resp);
+        return json_response($this->resp, $this->httpCode);
     }
 }
