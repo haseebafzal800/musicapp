@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Playlist;
+use App\Models\RecentlyPlayed;
+use App\Models\Song;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,7 +27,35 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // return view('home');
+
+        $data['pageTitle'] = 'Dashboard';
+        $data['dashboard'] = 'active';
+        $data['dashboardOpend'] = 'menu-open';
+        $data['dashboardOpening'] = 'menu-is-opening';
+        if(Auth::user()->hasRole('Admin')){
+            $data['users'] = Role::where('name', 'User')->first()->users->count();
+            $data['onlineUsers'] = Role::where('name', 'User')->first()->users->where('is_online', 1)->count();
+            $data['playlists'] = Playlist::count();
+            $data['songs'] = Song::count();
+        }else{
+            $data['playlists'] = Playlist::where('user_id', Auth::user()->user_id)->count();
+            $data['songs'] = Song::where('user_id', Auth::user()->user_id)->count();
+            $data['recentlyPlayed'] = RecentlyPlayed::where('user_id', Auth::user()->user_id)->count();
+            // license_key
+            // $data['songs'] = Song::count();
+        //     $data['producers'] = User::whereHas('roles', function ($query) {
+        //             $query->where('client_id', Auth::user()->client_id)->where('name', 'Producer');
+        //         })->count();
+        //     $data['clients'] = User::whereHas('roles', function ($query) {
+        //         $query->where('client_id', Auth::user()->client_id)->where('name', 'Client');
+        //     })->count();
+        //     $data['meetings'] = MeetingModel::where('client_id', Auth::user()->client_id)->count();
+        //     $data['todayMeetings'] = MeetingModel::whereDate('start', Carbon::today())->where('client_id', Auth::user()->client_id)->count();
+        }
+        // echo"<pre>";
+        // print_r($data['producers']); die;
+        return view('admin.dashboard', $data);
     }
     
     public function admin()

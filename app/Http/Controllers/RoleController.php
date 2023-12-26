@@ -96,6 +96,7 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         $permission = Permission::get();
+        // return response()->json($permission); die;
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();

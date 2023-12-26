@@ -5,18 +5,15 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          @if(!Auth::user()->hasRole('Admin') && !Auth::user()->hasRole('Client') && !Auth::user()->hasRole('Producer'))
-          <div class="col-lg-12 col-12">
-            <p class="text text-center alert alert-warning">Please wait for admin approval</p>
-          </div>
-          @else
+        
+        @if(Auth::user()->hasRole('Admin'))
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
                 <h3>{{ $clients??'0' }}</h3>
 
-                <p>Total Clients</p>
+                <p>Total Users</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person"></i>
@@ -31,7 +28,7 @@
               <div class="inner">
                 <h3>{{ $producers??'0' }}<sup style="font-size: 20px"></sup></h3>
 
-                <p>Total Producers</p>
+                <p>Total Playlists</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person"></i>
@@ -47,7 +44,7 @@
               <div class="inner">
                 <h3>{{ $meetings??'0' }}</h3>
 
-                <p>Total Meetings</p>
+                <p>Total Songs</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -64,7 +61,7 @@
               <div class="inner">
                 <h3>{{ $todayMeetings??'0' }}</h3>
 
-                <p>Today Meetings</p>
+                <p>Online Users</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -72,6 +69,88 @@
               <a href="/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+          @else
+            @if(Auth::user()->is_approved=='off')
+              <div class="col-lg-12 col-12">
+                <p class="text text-center alert alert-warning">Please wait for admin approval</p>
+              </div>
+            @elseif(Auth::user()->is_approved=='ban')
+              <div class="col-lg-12 col-12">
+                <p class="text text-center alert alert-danger">You are no more allowed to use the system. Contact Admin ! </p>
+              </div>
+            @elseif(Auth::user()->is_approved=='on')
+              <div class="col-lg-4 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                  <div class="inner">
+                    <h3>{{ $playlists??'0' }}</h3>
+                    <p>Total Playlists</p>
+                  </div>
+                  <div class="icon">
+                    <i style="font-size: 58px;" class="ion-ios-musical-notes"></i>
+                  </div>
+                  <!-- <a href="/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-4 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                  <div class="inner">
+                    <h3>{{ $songs??'0' }}<sup style="font-size: 20px"></sup></h3>
+                    <p>Total Songs</p>
+                  </div>
+                  <div class="icon">
+                    <i style="font-size: 58px;" class="ion-ios-musical-note"></i>
+                    <!-- <i class="ion ion-person"></i> -->
+                    <!-- <i class="ion ion-stats-bars"></i> -->
+                  </div>
+                  <!-- <a href="/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-4 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                  <div class="inner">
+                    <h3>{{ $recentlyPlayed??'0' }}</h3>
+                    <p>Recently Played</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                    <!-- <i class="ion ion-bag"></i> -->
+                    <!-- <i class="ion ion-person-add"></i> -->
+                  </div>
+                  <!-- <a href="/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+              </div>
+              <!-- ./col -->
+              <div class="col-lg-3 col-6 d-none">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                  <div class="inner">
+                    <h3>{{ $todayMeetings??'0' }}</h3>
+
+                    <p>My Favoriot</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                  </div>
+                  <!-- <a href="/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+              </div>
+              <div class="col-lg-12 col-12">
+                <label for="">My License Key:</label>
+                <!-- <h1 class="m-0">My License Key:</h1> -->
+                <!-- <input type="text" readonly class="form-control"  > -->
+                <div class="input-group">
+                <input type="text" id="searchInput" readonly value="{{(strlen(auth()->user()->license_key)>2?auth()->user()->license_key:'Contact Admin !')}}" class="form-control text-center" placeholder="License Key" aria-label="Search" aria-describedby="search-icon">
+                <div class="input-group-append">
+                  <span class="input-group-text btn btn-default" onclick="return copyToClipboard();" id="search-icon" ><i class="fas fa-copy"></i></span>
+                </div>
+              </div>
+              </div>
+            @endif
           @endif
           <!-- ./col -->
         </div>
@@ -597,4 +676,22 @@
   
   @include('includes.admin.footer')
   @include('includes.admin.scripts')
-@endsection
+  @endsection
+
+  <script>
+    function copyToClipboard() {
+      // Select the text field
+      var input = document.getElementById("searchInput");
+
+      // Select the text in the input field
+      input.select();
+      input.setSelectionRange(0, 99999); // For mobile devices
+
+      // Copy the text to the clipboard
+      document.execCommand("copy");
+
+      // Deselect the text field
+      input.setSelectionRange(0, 0);
+      addToast('info', 'Text Coppied', 'License key coppied to clipboard'); // class, title, body
+    }
+  </script>

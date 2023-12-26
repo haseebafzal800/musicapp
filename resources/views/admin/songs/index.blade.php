@@ -69,11 +69,11 @@
             serverSide: true,
             ajax: '{{ @url("/admin/songs") }}',
             columns: [
-                {data: 'id', name: 'id'},
-                // {data: 'rownum', name: 'rownum', searchable: false },
+                // {data: 'id', name: 'id'},
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 {data: 'title', name: 'title'},
                 {data: 'username', name: 'username'},
-                {data: 'playlists', name: 'playlists'},
+                {data: 'playlist', name: 'playlist'},
                 {data: 'action', name: 'action', orderable: false, searchable: true},
             ]
         });

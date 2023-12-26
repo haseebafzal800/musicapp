@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\AppsettingsConteroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
@@ -56,6 +57,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('admin/song/{id}', [SongsController::class, 'edit'])->name('song.edit');
     Route::post('admin/song-update', [SongsController::class, 'update'])->name('song.update');
     Route::get('admin/song-delete/{id}', [SongsController::class, 'delete'])->name('song.delete');
+    
+    //Songs
+    Route::get('admin/app-settings', [AppsettingsConteroller::class, 'index'])->name('appSettings.list');
+    Route::get('admin/app-settings/create', [AppsettingsConteroller::class, 'create'])->name('appSettings.create');
+    Route::post('admin/app-settings/create', [AppsettingsConteroller::class, 'store'])->name('appSettings.store');
+    Route::get('admin/app-settings/{id}', [AppsettingsConteroller::class, 'edit'])->name('appSettings.edit');
+    Route::post('admin/app-settings', [AppsettingsConteroller::class, 'update'])->name('appSettings.update');
+    Route::get('admin/app-settings/delete/{id}', [AppsettingsConteroller::class, 'delete'])->name('appSettings.delete');
 
 });
 ?>

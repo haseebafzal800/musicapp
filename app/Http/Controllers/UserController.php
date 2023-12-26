@@ -53,9 +53,9 @@ class UserController extends Controller
                     $btn='';
                     if (Gate::allows('approve-user')){
                         $btn .=' <a class="btn btn-xs btn-info" href="'.route('users.show',$row->id).'"><i class="fas fa-eye"></i></a>';
-                        if($row->client_id > 0 && $row->is_approved=='on'){
+                        if($row->is_approved=='on'){
                         $btn .=' <a class="btn btn-xs btn-primary" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-check"></i></a>';
-                        }elseif($row->client_id == '' && $row->is_approved=='ban'){
+                        }elseif($row->is_approved=='ban'){
                         $btn .= ' <a class="btn btn-xs btn-danger" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-ban"></i></a>';
                         }else{
                             $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.approve',$row->id).'"><i class="fas fa-check"></i></a>';
@@ -248,13 +248,20 @@ class UserController extends Controller
         // $settings = AppSettingsModel::create();
         $user = User::find($id);
         // $user->client_id = $settings->id;
-        $user->is_approved = 'on';
-        $user->save();
-        
-        $roles = ['User'];
-        $user->assignRole($roles);
-        return redirect()->route('users.index')->with('success','User created successfully');
+        if(($user->is_approved = 'off' || $user->is_approved = 'ban') && $user->license_key == '-1'){
+            $user->is_approved = 'on';
+            $user->license_key = generateLicenseKey($user->id);
+            $user->save();
+            $roles = ['User'];
+            $user->assignRole($roles);
+            return redirect()->route('users.index')->with('success','User approved successfully');
+        }else{
+            return redirect()->route('users.index')->with('danger','User already approved');
+        }
     }
+
+    
+    
 
     public function unapprove($id)
     {

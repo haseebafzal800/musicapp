@@ -30,6 +30,10 @@
   <link rel="stylesheet" href="{{url('admin/plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{url('admin/plugins/summernote/summernote-bs4.min.css')}}">
+  
+  <!-- toaster -->
+  <link rel="stylesheet" href="{{url('admin/plugins/toastr/toastr.min.css')}}">
+
   <link rel="stylesheet" href="{{url('admin/css/style.css')}}">
   
   

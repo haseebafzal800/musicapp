@@ -31,24 +31,22 @@ class SongsController extends Controller
                     
                 return $btn;
             })
-            ->addColumn('rownum', function ($row) {
-                return '';
-            })
+            ->addIndexColumn()
             ->addColumn('username', function ($row) {
                 return $row->user->name??'';
             })
-            ->addColumn('playlists', function ($row) {
+            ->addColumn('playlist', function ($row) {
                 $playlistName='';
                 foreach ($row->playlists as $playlist) {
-                    $playlistName .= ' <label class="badge badge-success">'.$playlist->name.'</label>'; // Replace 'name' with the actual attribute you want to retrieve from the Playlist model
+                    $playlistName .= ' <label class="badge badge-success">'.$playlist->title.'</label>'; // Replace 'name' with the actual attribute you want to retrieve from the Playlist model
                     // Access other playlist information...
                 }
                 return $playlistName;
             })
-            ->rawColumns(['rownum','status', 'playlists', 'action'])
+            ->rawColumns(['status', 'username', 'playlist', 'action'])
             ->make(true);
         }
-        $data['pageTitle'] = 'Generouses';
+        $data['pageTitle'] = 'Songs';
         $data['songsListActive'] = 'active';
         $data['songsOpening'] = 'menu-is-opening';  
         $data['songsOpend'] = 'menu-open';

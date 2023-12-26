@@ -250,15 +250,38 @@
           </li>
           @endif
           @can('app-settings')
-          <li class="nav-item {{$appSettingsOpening??''}} {{$appSettingsOpend??''}}">
-            <a href="{{@url('/app-settings')}}" class="nav-link {{$appSettings??''}}">
+          <!-- <li class="nav-item {{$appSettingsOpening??''}} {{$appSettingsOpend??''}}">
+            <a href="{{@url('/admin/app-settings')}}" class="nav-link {{$appSettings??''}}">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 App Settings
-                <!-- <i class="fas fa-angle-left right"></i> -->
+              </p>
+            </a>
+          </li> -->
+          <li class="nav-item {{$appSettingsOpening??''}} {{$appSettingsOpend??''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                App Settings
+                <i class="fas fa-angle-left right"></i>
                 <!-- <span class="badge badge-info right">6</span> -->
               </p>
             </a>
+            <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{@url('/admin/app-settings')}}" class="nav-link {{$appSettingsListActive??''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{@url('/admin/app-settings/create')}}" class="nav-link {{$appSettingsCreateActive??''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create New</p>
+                </a>
+              </li>
+              
+            </ul>
           </li>
           @endcan
 
