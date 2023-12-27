@@ -55,10 +55,11 @@
             $(tr).hide();
             // $(tr).remove().draw( false );
             $(tr).remove();
-            Swal.fire('Deleted!', '', 'success')
-            // addToast('info', 'Text Coppied', 'License key coppied to clipboard'); // class, title, body
+            // Swal.fire('Deleted!', '', 'success')
+            addToast('success', 'Deleted !', '<div style="width:250px;">Data deleted successfuly</div>'); // class, title, body
           }else{
-            Swal.fire('Something went wrong, try again!', '', 'warning')
+            addToast('warning', 'Error !', '<div style="width:250px;">Something went wrong, try again!</div>'); // class, title, body
+            // Swal.fire('Something went wrong, try again!', '', 'warning')
           }
         })
       }
@@ -70,6 +71,7 @@
       title: title,
       autohide: true,
       delay: 2000,
+      width:500,
       // position: 'topRight',
       // subtitle: 'Subtitle',
       body: body
@@ -125,3 +127,6 @@
 <script src="{{ asset('js/chatify/utils.js') }}"></script>
 <script src="{{ asset('js/chatify/code.js') }}"></script> */ ?>
   <!-- ******For Message Notifictions******* -->
+  @if (session('success'))
+            <script>addToast('success', 'Success', '<div style="width:250px;">{{ session("success") }}</div>')</script>
+  @endif

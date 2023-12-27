@@ -14,22 +14,24 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
-    
 class UserController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:user-list|user-create|user-edit|user-delete|approve-user', ['only' => ['index','store']]);
+         $this->middleware('permission:user-create', ['only' => ['create','store']]);
+         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:user-delete', ['only' => ['delete']]);
+         $this->middleware('permission:approve-user', ['only' => ['approved', 'unapprove']]);
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index(Request $request): View
-    // {
-    //     $data = User::latest()->paginate(5);
-  
-    //     return view('admin.users.index',compact('data'))
-    //         ->with('i', ($request->input('page', 1) - 1) * 5);
-    // }
+    
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -38,12 +40,15 @@ class UserController extends Controller
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('roles', function ($row) {
                     $roles='';
-                    $mroles = $row->getRoleNames();
-                    if(!empty($mroles)){
-                        foreach($mroles as $v){
-                            $roles .='<label class="badge badge-success">'.$v.'</label>';
-                        }
-                    }
+                    // $mroles = $row->getRoleNames();
+                    $firstRole = $row->roles->first();
+                    $role = $firstRole?$firstRole->name:'';
+                    $roles .='<label class="badge badge-success">'.$role.'</label>';
+                    // if(!empty($mroles)){
+                    //     foreach($mroles as $v){
+                    //         $roles .='<label class="badge badge-success">'.$v.'</label>';
+                    //     }
+                    // }
                     return $roles ;
                 })
                 ->addColumn('action', function($row){
@@ -51,23 +56,29 @@ class UserController extends Controller
                     // $btn = '<a href="javascript:void(0)" onclick="DeleteMe(this, '."'".$url."'".')" class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i></a>';
                     // $btn .= ' <a href="'.@url("/meeting/$row->meeting_id/participent".$row->id).'" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>';
                     $btn='';
-                    if (Gate::allows('approve-user')){
-                        $btn .=' <a class="btn btn-xs btn-info" href="'.route('users.show',$row->id).'"><i class="fas fa-eye"></i></a>';
-                        if($row->is_approved=='on'){
-                        $btn .=' <a class="btn btn-xs btn-primary" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-check"></i></a>';
-                        }elseif($row->is_approved=='ban'){
-                        $btn .= ' <a class="btn btn-xs btn-danger" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-ban"></i></a>';
-                        }else{
-                            $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.approve',$row->id).'"><i class="fas fa-check"></i></a>';
-                        $btn .= ' <a class="btn btn-xs btn-danger" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-ban"></i></a>';
+                    $firstRole = $row->roles->first();
+                    $role = $firstRole?$firstRole->name:'';
+                    if($role!='Admin'){
+                        if (Gate::allows('approve-user')){
+                            $btn .=' <a class="btn btn-xs btn-info" href="'.route('users.show',$row->id).'"><i class="fas fa-eye"></i></a>';
+                            if($row->is_approved=='on'){
+                            $btn .=' <a class="btn btn-xs btn-primary" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-check"></i></a>';
+                            }elseif($row->is_approved=='ban'){
+                            $btn .= ' <a class="btn btn-xs btn-danger" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-ban"></i></a>';
+                            }else{
+                                $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.approve',$row->id).'"><i class="fas fa-check"></i></a>';
+                            $btn .= ' <a class="btn btn-xs btn-danger" href="'.route('users.unapprove',$row->id).'"><i class="fas fa-ban"></i></a>';
+                            }
                         }
-                    }
-                    $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.edit',$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
-                    $url = route("users.destroy", $row->id);
-                    $btn .= ' <a href="javascript:void(0)" onclick="DeleteMe(this, '."'".$url."'".')" class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i></a>';
-                       
+                        $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.edit',$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
+                        $url = route("users.destroy", $row->id);
+                        $btn .= ' <a href="javascript:void(0)" onclick="DeleteMe(this, '."'".$url."'".')" class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i></a>';
+                    }else{
+                        $btn .= ' <a class="btn btn-xs btn-primary" href="'.route('users.edit',$row->id).'"><i class="fas fa-pencil-alt"></i></a>';
+                    }   
                     return $btn;
                 })
+
                 ->addColumn('rownum', function ($row) {
                     return '';
                 })
@@ -131,11 +142,17 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $pageTitle = 'View User';
-        $userListActive = 'active';
-        $userOpening = 'menu-is-opening';
-        $userOpend = 'menu-open';
-        return view('admin.users.show',compact('user', 'pageTitle', 'userListActive', 'userOpening', 'userOpend'));
+        if($user){
+            $pageTitle = 'View User';
+            $userListActive = 'active';
+            $userOpening = 'menu-is-opening';
+            $userOpend = 'menu-open';
+            return view('admin.users.show',compact('user', 'pageTitle', 'userListActive', 'userOpening', 'userOpend'));
+        }else{
+            return redirect()->route('users.index')
+                        ->with('error','User not found');
+        }
+        
     }
     
     /**

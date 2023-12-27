@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GenerousController;
 use App\Http\Controllers\PlaylistsController;
 use App\Http\Controllers\SongsController;
+use App\Http\Controllers\NotificationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +32,16 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('admin/home', [HomeController::class, 'admin'])->name('admin.home');
-  
+
 Route::group(['middleware' => ['auth']], function() {
+    // change-password
     Route::resource('admin/roles', RoleController::class);
     Route::resource('admin/users', UserController::class);
     Route::get('admin/users/approved/{id}', [UserController::class, 'approved'])->name('users.approve');
     Route::get('admin/users/destroy/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('admin/users/unapprove/{id}', [UserController::class, 'unapprove'])->name('users.unapprove');
+    Route::get('change-password', [UserController::class, 'change_password'])->name('change-password');
+    Route::post('update-password', [UserController::class, 'update_password'])->name('update-password');
 
     Route::resource('products', ProductController::class);
     Route::get('admin/albums', [AlbumController::class, 'index'])->name('album.list');
@@ -65,6 +69,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('admin/app-settings/{id}', [AppsettingsConteroller::class, 'edit'])->name('appSettings.edit');
     Route::post('admin/app-settings', [AppsettingsConteroller::class, 'update'])->name('appSettings.update');
     Route::get('admin/app-settings/delete/{id}', [AppsettingsConteroller::class, 'delete'])->name('appSettings.delete');
+
+    //Notifications
+
+    Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');
+    Route::get('/notification/delete/{id}', [NotificationsController::class, 'destroy'])->name('notification-delete');
 
 });
 ?>

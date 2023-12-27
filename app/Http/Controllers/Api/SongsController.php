@@ -12,7 +12,7 @@ class SongsController extends Controller
     function index()
     {
         $perPage = request('per_page', 10);
-        $this->data = Song::where('user_id', auth()->user()->id)->paginate($perPage);
+        $this->data = Song::orderBy('id', 'desc')->where('user_id', auth()->user()->id)->paginate($perPage);
         if($this->data){
             $this->responsee(true);
         }

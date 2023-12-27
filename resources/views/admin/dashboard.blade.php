@@ -18,7 +18,7 @@
               <div class="icon">
                 <i class="ion ion-person"></i>
               </div>
-              <a href="/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/admin/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -34,7 +34,7 @@
                 <i class="ion ion-person"></i>
                 <!-- <i class="ion ion-stats-bars"></i> -->
               </div>
-              <a href="/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/admin/playlists" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -51,7 +51,7 @@
                 <!-- <i class="ion ion-bag"></i> -->
                 <!-- <i class="ion ion-person-add"></i> -->
               </div>
-              <a href="/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/admin/songs" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -66,7 +66,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/admin/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           @else
@@ -89,7 +89,7 @@
                   <div class="icon">
                     <i style="font-size: 58px;" class="ion-ios-musical-notes"></i>
                   </div>
-                  <!-- <a href="/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                  <!-- <a href="/admin/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
               <!-- ./col -->
@@ -105,7 +105,7 @@
                     <!-- <i class="ion ion-person"></i> -->
                     <!-- <i class="ion ion-stats-bars"></i> -->
                   </div>
-                  <!-- <a href="/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                  <!-- <a href="/admin/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
               <!-- ./col -->
@@ -121,7 +121,7 @@
                     <!-- <i class="ion ion-bag"></i> -->
                     <!-- <i class="ion ion-person-add"></i> -->
                   </div>
-                  <!-- <a href="/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                  <!-- <a href="/admin/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
               <!-- ./col -->
@@ -136,7 +136,7 @@
                   <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                   </div>
-                  <!-- <a href="/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                  <!-- <a href="/admin/meetings" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
               <div class="col-lg-12 col-12">

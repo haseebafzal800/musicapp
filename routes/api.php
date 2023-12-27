@@ -29,7 +29,7 @@ Route::post('login', [UsersController::class, 'login']);
 //     return $request->user();
 // });
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('logout', [UsersController::class, 'logout']);
+    Route::get('/logout', [UsersController::class, 'logout']);
     //Album
     Route::get('albums', [AlbumsController::class, 'index'])->name('album.list');
     Route::post('album-create', [AlbumsController::class, 'store'])->name('album.create');

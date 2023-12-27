@@ -9,6 +9,13 @@ use App\Models\Songs;
 
 class PlaylistsController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:playlist-list|playlist-create|playlist-edit|playlist-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:playlist-create', ['only' => ['create','store']]);
+         $this->middleware('permission:playlist-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:playlist-delete', ['only' => ['delete']]);
+    }
     function index(Request $request){
         if ($request->ajax()) {
             // $data = Playlist::orderBy('id','DESC')->get();
@@ -69,7 +76,7 @@ class PlaylistsController extends Controller
             'title'    => $input['title'],
             'status'    => $input['status'],
         ]);
-        return redirect('/admin/playlists');
+        return redirect('/admin/playlists')->with('success','playlist updated successfully');
     }
     public function delete($id)
     {

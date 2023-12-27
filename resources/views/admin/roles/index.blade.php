@@ -18,11 +18,11 @@
         </div>
 
 
-        @if ($message = Session::get('success'))
+        <!-- @if ($message = Session::get('success'))
             <div class="alert alert-success">
                 <p>{{ $message }}</p>
             </div>
-        @endif
+        @endif -->
 
 
         <table id="example1" class="table table-bordered table-striped">

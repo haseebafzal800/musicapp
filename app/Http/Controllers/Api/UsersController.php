@@ -15,17 +15,25 @@ class UsersController extends Controller
             $user = Auth::user();
 
             $data = User::where('id', $user->id)->first();
-            if(0=='1'){
-            // if($data->is_online=='1'){
-                // $this->data = $songs;
-                $this->w_err = 'Already loggedin on another device';
+            if($data->license_key=='0'){
+                if($data->is_online=='1'){
+                    // $this->data = $songs;
+                    $this->w_err = 'Already loggedin on another device';
+                    $this->responsee(false, $this->w_err);
+                }else{
+                    $data->is_online = '1';
+                    $data->save();
+                    $data['api_token'] = $user->createToken('auth_token')->plainTextToken;
+                    $this->data = $data;
+                    $this->responsee(true);
+                }
+            }elseif($data->license_key=='-1'){
+                $this->w_err = 'Please verify your license key first';
+                $this->w_err = 'Please get your license key from admin and verify to login';
                 $this->responsee(false, $this->w_err);
             }else{
-                $data->is_online = '1';
-                $data->save();
-                $data['api_token'] = $user->createToken('auth_token')->plainTextToken;
-                $this->data = $data;
-                $this->responsee(true);
+                $this->w_err = 'Please verify your license key first';
+                $this->responsee(false, $this->w_err);
             }
         } else {
             $this->d_err = 'These credentials do not match our records.';
@@ -37,6 +45,12 @@ class UsersController extends Controller
     public function logout(Request $request)
     {
         if ($request->is('api*')) {
+            $id = Auth::user()->id;
+            $user = User::find($id);
+            // var_dump($user); die;
+            $user->is_online = '1';
+            $user->save();
+            $user->update(['is_online' => '0']);
             $request->user()->currentAccessToken()->delete();
             $this->responsee(true);
             return json_response($this->resp, $this->httpCode);

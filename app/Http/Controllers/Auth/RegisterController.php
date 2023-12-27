@@ -79,7 +79,7 @@ class RegisterController extends Controller
         if($user){
             NotificationsModel::create([
                 'title' => 'New Client Registration',
-                'description' => 'A new client <b>'.$data['name'].'</b> registered, needs admin approval. Click <a target="_blank" href="'.@url('users/'.$user->id).'">here</a> to view and take action.',
+                'description' => 'A new client <b>'.$data['name'].'</b> registered, needs admin approval. Click <a target="_blank" href="'.@url('/admin/users/'.$user->id).'">here</a> to view and take action.',
                 'is_delivered' => '0',
                 'is_seen' => '0'
             ]);

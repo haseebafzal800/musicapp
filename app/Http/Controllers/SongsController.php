@@ -8,6 +8,13 @@ use App\Models\Song;
 
 class SongsController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:song-list|song-create|song-edit|song-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:song-create', ['only' => ['create','store']]);
+         $this->middleware('permission:song-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:song-delete', ['only' => ['delete']]);
+    }
     function index(Request $request){
         if ($request->ajax()) {
             $data = Song::with('user', 'playlists')->orderBy('id','DESC')->get();
@@ -74,7 +81,7 @@ class SongsController extends Controller
             'title'    => $input['title'],
             'status'    => $input['status'],
         ]);
-        return redirect('/admin/songs');
+        return redirect('/admin/songs')->with('success','Data updated successfully');;
     }
     public function delete($id)
     {

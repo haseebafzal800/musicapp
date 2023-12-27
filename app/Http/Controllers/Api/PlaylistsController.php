@@ -11,7 +11,7 @@ class PlaylistsController extends Controller
 {
     function index()
     {
-        $this->data = Playlist::where('user_id', auth()->user()->id)->get();
+        $this->data = Playlist::orderBy('id', 'desc')->where('user_id', auth()->user()->id)->get();
         if($this->data)
             $this->responsee(true);
         else
