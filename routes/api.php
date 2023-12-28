@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('playlist-update/', [PlaylistsController::class, 'update'])->name('playlist.update');
     Route::get('playlist-delete/{id}', [PlaylistsController::class, 'delete'])->name('playlist.delete');
     // Songs
-    Route::get('songs', [SongsController::class, 'index'])->name('song.list');
+    Route::get('songs/{searchStr?}', [SongsController::class, 'index'])->name('song.list');
     Route::post('song-create', [SongsController::class, 'store'])->name('song.create');
     Route::get('song/{id}', [SongsController::class, 'edit'])->name('song.edit');
     Route::post('song-update/', [SongsController::class, 'update'])->name('song.update');
