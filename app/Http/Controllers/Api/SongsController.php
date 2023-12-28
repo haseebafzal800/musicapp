@@ -9,10 +9,18 @@ use App\Models\Song;
 
 class SongsController extends Controller
 {
-    function index()
+    
+    function index($searchStr=null)
     {
-        $perPage = request('per_page', 10);
-        $this->data = Song::orderBy('id', 'desc')->where('user_id', auth()->user()->id)->paginate($perPage);
+        $perPage = request('per_page', 1);
+        if($searchStr){
+            $this->data = Song::where('user_id', auth()->user()->id)
+            ->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($searchStr) . '%'])
+            ->orderBy('id', 'desc')
+            ->paginate($perPage);
+        }else{
+            $this->data = Song::orderBy('id', 'desc')->where('user_id', auth()->user()->id)->paginate($perPage);
+        }
         if($this->data){
             $this->responsee(true);
         }
