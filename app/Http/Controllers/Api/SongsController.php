@@ -119,8 +119,10 @@ class SongsController extends Controller
         if($id){
             $this->data = Song::where('user_id', auth()->user()->id)->find($id);
             if($this->data){
-                if($this->data->delete())
+                if($this->data->delete()){
                     $this->responsee(true);
+                    
+                }
                 else
                     $this->responsee(false, $this->w_err);
             }else

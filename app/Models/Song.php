@@ -19,7 +19,22 @@ class Song extends Model
     {
         return $this->belongsToMany(Playlist::class, 'playlist_songs', 'song_id', 'playlist_id');
     }
+    public function recentPlayed()
+    {
+        return $this->hasOne(RecentlyPlayed ::class);
+        // Replace RecentPlayed::class with the actual class of your RecentPlayed model
+    }
+    protected static function boot()
+    {
+        parent::boot();
 
+        // Listen for the "deleting" event
+        static::deleting(function ($song) {
+            // Detach the song from all playlists
+            $song->playlists()->detach();
+            $song->recentPlayed()->delete();
+        });
+    }
     // public function playlists()
     // {
     //     return $this->belongsToMany(Playlist::class);

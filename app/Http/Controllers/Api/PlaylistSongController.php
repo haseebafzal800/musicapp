@@ -14,7 +14,7 @@ class PlaylistSongController extends Controller
 {
     public function index($playlistId)
     {
-        $playlist = Playlist::findOrFail($playlistId);
+        $playlist = Playlist::find($playlistId);
         if($playlist){
             // $songs = $playlist->songs()->get();
             // $this->data = $playlist->songs()->paginate(10);
