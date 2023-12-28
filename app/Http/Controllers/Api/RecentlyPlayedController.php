@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\RecentlyPlayed;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
-
+use DB;
 
 class RecentlyPlayedController extends Controller
 {
@@ -55,6 +55,10 @@ class RecentlyPlayedController extends Controller
     {
         $user = auth()->user();
         $this->data = RecentlyPlayed::orderBy('updated_at', 'desc')->where('user_id', $user->id)->with('song')->get();
+        $this->data = DB::table('recently_played')
+                            ->join('songs', 'recently_played.song_id', '=', 'songs.id')
+                            ->select('songs.*')
+                            ->get();
         // $recentlyPlayed = $user->recentlyPlayed()->with('song')->orderBy('updated_at', 'desc')->get();
         if($this->data->count()>0)
         $this->responsee(true);
