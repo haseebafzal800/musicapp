@@ -22,15 +22,12 @@ class Song extends Model
     public function recentPlayed()
     {
         return $this->hasOne(RecentlyPlayed ::class);
-        // Replace RecentPlayed::class with the actual class of your RecentPlayed model
     }
     protected static function boot()
     {
         parent::boot();
 
-        // Listen for the "deleting" event
         static::deleting(function ($song) {
-            // Detach the song from all playlists
             $song->playlists()->detach();
             $song->recentPlayed()->delete();
         });

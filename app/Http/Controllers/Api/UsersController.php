@@ -15,7 +15,8 @@ class UsersController extends Controller
             $user = Auth::user();
 
             $data = User::where('id', $user->id)->first();
-            if($data->license_key=='0'){
+            // if($data->license_key=='0'){
+            if('0'=='0'){
                 if($data->is_online=='1'){
                     // $this->data = $songs;
                     $this->w_err = 'Already loggedin on another device';
@@ -27,7 +28,8 @@ class UsersController extends Controller
                     $this->data = $data;
                     $this->responsee(true);
                 }
-            }elseif($data->license_key=='-1'){
+            }elseif('1'=='-1'){
+            // }elseif($data->license_key=='-1'){
                 $this->w_err = 'Please verify your license key first';
                 $this->w_err = 'Please get your license key from admin and verify to login';
                 $this->responsee(false, $this->w_err);
