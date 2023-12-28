@@ -32,7 +32,7 @@ class PlaylistSongController extends Controller
         return json_response($this->resp, $this->httpCode);
     }
 
-    public function store(Request $request, $playlistId)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'playlist_id' => 'required|numeric',
@@ -46,9 +46,10 @@ class PlaylistSongController extends Controller
         if ($validator->fails())
             $this->responsee(false, $validator->errors());
         else{
-            $playlist = Playlist::findOrFail($request->playlist_id);
+            $playlist = Playlist::find($request->playlist_id);
+            // var_dump($playlist); die;
             if($playlist){
-                $song = Song::findOrFail($request->song_id);
+                $song = Song::find($request->song_id);
                 if($song){
                     $this->data = $playlist->songs()->attach($song->id);
                     // if($playlist->songs()->attach($song->id))

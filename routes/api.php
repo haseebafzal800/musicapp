@@ -49,16 +49,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('playlist-update/', [PlaylistsController::class, 'update'])->name('playlist.update');
     Route::get('playlist-delete/{id}', [PlaylistsController::class, 'delete'])->name('playlist.delete');
     // Songs
-    Route::get('songs/{searchStr?}', [SongsController::class, 'index'])->name('song.list');
+    Route::get('songs', [SongsController::class, 'index'])->name('song.list');
     Route::post('song-create', [SongsController::class, 'store'])->name('song.create');
     Route::get('song/{id}', [SongsController::class, 'edit'])->name('song.edit');
     Route::post('song-update/', [SongsController::class, 'update'])->name('song.update');
     Route::get('song-delete/{id}', [SongsController::class, 'delete'])->name('song.delete');
-    Route::get('song-search/{searchStr}', [SongsController::class, 'search'])->name('song.search');
     //playlist Songs
 
     Route::get('/playlists/{playlistId}/songs', [PlaylistSongController::class, 'index']);
-    Route::post('/playlists/{playlistId}/songs', [PlaylistSongController::class, 'store']);
+    Route::post('/playlists/songs/create', [PlaylistSongController::class, 'store']);
     Route::get('/playlists/{playlistId}/songs/{songId}', [PlaylistSongController::class, 'delete']);
     
     //Recent played
