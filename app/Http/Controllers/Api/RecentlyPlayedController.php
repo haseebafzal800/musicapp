@@ -58,7 +58,7 @@ class RecentlyPlayedController extends Controller
         $this->data = DB::table('recently_played')
                             ->join('songs', 'recently_played.song_id', '=', 'songs.id')
                             ->select('songs.*')
-                            ->orderBy('updated_at', 'desc')
+                            ->orderBy('recently_played.updated_at', 'desc')
                             ->get();
         // $recentlyPlayed = $user->recentlyPlayed()->with('song')->orderBy('updated_at', 'desc')->get();
         if($this->data->count()>0)
