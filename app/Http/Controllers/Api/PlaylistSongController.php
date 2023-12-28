@@ -42,9 +42,15 @@ class PlaylistSongController extends Controller
                 new UniquePlaylistSong($request->playlist_id),
             ],
         ]);
-
-        if ($validator->fails())
-            $this->responsee(false, $validator->errors());
+        $customMessages = [
+            'song_id.unique_playlist_song' => 'The selected song is already in the playlist.',
+        ];
+        
+        // $validator->setCustomMessages($customMessages);
+        if ($validator->fails()){
+            $errors = $validator->errors();
+            $this->responsee(false, implode(' ', $validator->errors()->all()));
+        }
         else{
             $playlist = Playlist::find($request->playlist_id);
             // var_dump($playlist); die;
