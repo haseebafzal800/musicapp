@@ -12,7 +12,7 @@ class SongsController extends Controller
     
     function index($searchStr=null)
     {
-        $perPage = request('per_page', 1);
+        $perPage = request('per_page', 10);
         if($searchStr){
             $this->data = Song::where('user_id', auth()->user()->id)
             ->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($searchStr) . '%'])
