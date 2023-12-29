@@ -29,6 +29,7 @@ class HomeController extends Controller
     public function index()
     {
         // return view('home');
+        // return response()->json(Auth::user()->id);
 
         $data['pageTitle'] = 'Dashboard';
         $data['dashboard'] = 'active';
@@ -40,9 +41,9 @@ class HomeController extends Controller
             $data['playlists'] = Playlist::count();
             $data['songs'] = Song::count();
         }else{
-            $data['playlists'] = Playlist::where('user_id', Auth::user()->user_id)->count();
-            $data['songs'] = Song::where('user_id', Auth::user()->user_id)->count();
-            $data['recentlyPlayed'] = RecentlyPlayed::where('user_id', Auth::user()->user_id)->count();
+            $data['playlists'] = Playlist::where('user_id', Auth::user()->id)->count();
+            $data['songs'] = Song::where('user_id', Auth::user()->id)->count();
+            $data['recentlyPlayed'] = RecentlyPlayed::where('user_id', Auth::user()->id)->count();
             // license_key
             // $data['songs'] = Song::count();
         //     $data['producers'] = User::whereHas('roles', function ($query) {

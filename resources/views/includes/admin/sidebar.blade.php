@@ -2,8 +2,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{@url('/home')}}" class="brand-link">
-      <img src="" alt="{{ config('app.name') }}" class="brand-image elevation-3" style="opacity: .8">
-      <!-- <img src="{{@url('/admin/dist/img/AdminLTELogo.png')}}" alt="{{ config('app.name') }}" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
+      <!-- <img src="" alt="{{ config('app.name') }}" class="brand-image elevation-3" style="opacity: .8"> -->
+      <img src="{{@url('/admin/dist/img/AdminLTELogo.png')}}" alt="{{ config('app.name') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light invisible">{{ config('app.name') }}</span>
     </a>
 
@@ -249,7 +249,7 @@
             </ul>
           </li>
           @endif
-          @can('app-settings')
+          @can('app-setting')
           <!-- <li class="nav-item {{$appSettingsOpening??''}} {{$appSettingsOpend??''}}">
             <a href="{{@url('/admin/app-settings')}}" class="nav-link {{$appSettings??''}}">
               <i class="nav-icon fas fa-copy"></i>
@@ -264,7 +264,6 @@
               <p>
                 App Settings
                 <i class="fas fa-angle-left right"></i>
-                <!-- <span class="badge badge-info right">6</span> -->
               </p>
             </a>
             <ul class="nav nav-treeview">
