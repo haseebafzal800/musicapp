@@ -28,6 +28,7 @@ class User extends Authenticatable
         'license_key',
         'is_approved',
         'is_online',
+        'is_license_key_verified',
     ];
   
     /**

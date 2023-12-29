@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -15,10 +16,9 @@ class UsersController extends Controller
             $user = Auth::user();
 
             $data = User::where('id', $user->id)->first();
-            // if($data->license_key=='0'){
+            // if($data->is_license_key_verified==true){
             if('0'=='0'){
                 if($data->is_online=='1'){
-                    // $this->data = $songs;
                     $this->w_err = 'Already loggedin on another device';
                     $this->responsee(false, $this->w_err);
                 }else{
@@ -28,11 +28,6 @@ class UsersController extends Controller
                     $this->data = $data;
                     $this->responsee(true);
                 }
-            }elseif('1'=='-1'){
-            // }elseif($data->license_key=='-1'){
-                $this->w_err = 'Please verify your license key first';
-                $this->w_err = 'Please get your license key from admin and verify to login';
-                $this->responsee(false, $this->w_err);
             }else{
                 $this->w_err = 'Please verify your license key first';
                 $this->responsee(false, $this->w_err);
@@ -57,5 +52,39 @@ class UsersController extends Controller
             $this->responsee(true);
             return json_response($this->resp, $this->httpCode);
         }
+    }
+    public function verifyLicenseKey(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'license_key' => 'required',
+        ]);
+        if ($validator->fails())
+            $this->responsee(false, implode(',', $validator->errors()->all()));
+        else{
+            $user = User::find($request->user_id);
+            if($user){
+                if ($user->license_key === $request->license_key) {
+                    if($user->is_license_key_verified==true){
+                        $this->d_err = 'License key already verified';
+                        $this->responsee(false, $this->d_err);
+                    }else{
+                        if($user->update(['is_license_key_verified' => true])){
+                            $this->data = true;
+                            $this->responsee(true);
+                        }else{
+                            $this->responsee(false, $this->w_err);
+                        }
+                    }
+                }else{
+                    $this->d_err = 'Invalid License Key';
+                    $this->responsee(false, $this->d_err);
+                }
+            }else{
+                $this->d_err = 'User not found';
+                $this->responsee(false, $this->d_err);
+            }
+        }
+        return json_response($this->resp, $this->httpCode);
     }
 }

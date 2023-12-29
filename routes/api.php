@@ -30,6 +30,9 @@ Route::post('login', [UsersController::class, 'login']);
 // });
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [UsersController::class, 'logout']);
+    //License Key Varification 
+    Route::post('/verify-license-key', [UsersController::class, 'verifyLicenseKey']);
+
     //Album
     Route::get('albums', [AlbumsController::class, 'index'])->name('album.list');
     Route::post('album-create', [AlbumsController::class, 'store'])->name('album.create');
