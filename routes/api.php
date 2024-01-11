@@ -31,7 +31,7 @@ Route::post('login', [UsersController::class, 'login']);
 // });
 // Route::group(['middleware' => ['auth:sanctum']], function () {
 // });
-Route::group(['middleware' => ['auth:sanctum', 'license_key_verification']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [UsersController::class, 'logout'])->withoutMiddleware(['license_key_verification']);
     Route::post('/verify-license-key', [UsersController::class, 'verifyLicenseKey'])->withoutMiddleware(['license_key_verification']);
     Route::get('albums', [AlbumsController::class, 'index'])->name('album.list');
