@@ -67,7 +67,7 @@
                 </a>
               </li>
               @endcan
-              @can('role-create') 
+              @can('roles-create') 
               <li class="nav-item">
                 <a href="{{@url('/admin/roles/create')}}" class="nav-link {{$roleCreateActive??''}}">
                   <i class="far fa-circle nav-icon"></i>
@@ -126,7 +126,7 @@
                 </a>
               </li>
               @endcan
-              @can('user-create')
+              @can('users-create')
               <li class="nav-item">
                 <a href="{{@url('admin/users/create')}}" class="nav-link {{$userCreateActive??''}}">
                   <i class="far fa-circle nav-icon"></i>

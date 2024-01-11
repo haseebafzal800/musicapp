@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SongResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Song;
@@ -20,6 +21,21 @@ class SongsController extends Controller
             ->paginate($perPage);
         }else{
             $this->data = Song::orderBy('id', 'desc')->where('user_id', auth()->user()->id)->paginate($perPage);
+            // $songs = Song::orderBy('id', 'desc')->where('user_id', auth()->user()->id)->paginate($perPage);
+            // $data = SongResource::collection($songs);
+            // $this->data = $data->response()->getData(true);
+            // $this->data = SongResource::collection($songs);
+            /*$this->data = [
+                'data' => $data,
+                'pagination' => [
+                    'total' => $songs->total(),
+                    'per_page' => $songs->perPage(),
+                    'current_page' => $songs->currentPage(),
+                    'last_page' => $songs->lastPage(),
+                    'from' => $songs->firstItem(),
+                    'to' => $songs->lastItem(),
+                ],
+            ]; */
         }
         if($this->data){
             $this->responsee(true);
@@ -28,36 +44,12 @@ class SongsController extends Controller
             $this->responsee(false, $this->d_err);
         }
         return json_response($this->resp, $this->httpCode);
-
-        // $paginationData = [
-        //     'current_page' => $songs->currentPage(),
-        //     'per_page' => $songs->perPage(),
-        //     'total' => $songs->total(),
-        //     'last_page' => $songs->lastPage(),
-        // ];
-
-        // $links = [
-        //     'first' => $songs->url(1),
-        //     'last' => $songs->url($songs->lastPage()),
-        //     'prev' => $songs->previousPageUrl(),
-        //     'next' => $songs->nextPageUrl(),
-        // ];
-
-        // $meta = [
-        //     'pagination' => $paginationData,
-        // ];
-        // $this->resp['data'] = ['songs' => $songs, 'links' => $links, 'meta' => $meta];
     }
-    // function index()
-    // {
-    //     $data = Song::where('user_id', auth()->user()->id)->get();
-    //     // $data = Song::where('user_id', auth()->user()->id)->with('user')->orderBy('id','DESC')->get();
-    //     $this->resp['data'] = $data;
-    //     return json_response($this->resp, $this->httpCode);
-    // }
+    
     function store(Request $request)
     {
         $request->merge(['user_id' => auth()->user()->id]);
+        $request->merge(['order_by' => Song::max('order_by') + 1]);
         
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
@@ -91,7 +83,19 @@ class SongsController extends Controller
             $this->responsee(false, $this->id_err);
         return json_response($this->resp, $this->httpCode);
     }
+    public function reorderSongs(Request $request)
+    {
+        $newOrder = $request->input('new_order');
+        $startPosition = $request->input('start_position');
+        $endPosition = $request->input('end_position');
 
+        foreach ($newOrder as $index => $songId) {
+            // Update the order_by value for each song
+            Song::where('id', $songId)->update(['order_by' => $startPosition + $index]);
+        }
+
+        return response()->json(['message' => 'Songs reordered successfully']);
+    }
     public function update(Request $request)
     {
         $input = $request->all();

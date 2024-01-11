@@ -63,14 +63,14 @@
                 {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
             </div>
         </div>
-        @if(Auth::user()->hasRole('Admin'))
+        <?php /* @if(Auth::user()->hasRole('Admin'))
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Role:</strong>
                     {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control')) !!}
                 </div>
             </div>
-        @endif
+        @endif */ ?>
         
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
             <button type="submit" class="btn btn-primary mb-3">Submit</button>

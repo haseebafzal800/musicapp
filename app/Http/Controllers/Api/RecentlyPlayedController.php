@@ -54,16 +54,18 @@ class RecentlyPlayedController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $this->data = RecentlyPlayed::orderBy('updated_at', 'desc')->where('user_id', $user->id)->with('song')->get();
-        $this->data = DB::table('recently_played')
+        $rp = RecentlyPlayed::where('user_id', $user->id)->count();
+        if($rp>0){
+            $this->data = DB::table('recently_played')
                             ->join('songs', 'recently_played.song_id', '=', 'songs.id')
                             ->select('songs.*')
                             ->orderBy('recently_played.updated_at', 'desc')
                             ->where('recently_played.user_id', $user->id)
                             ->get();
         // $recentlyPlayed = $user->recentlyPlayed()->with('song')->orderBy('updated_at', 'desc')->get();
-        if($this->data->count()>0)
-        $this->responsee(true);
+
+            $this->responsee(true);
+        }
         else
             $this->responsee(false, $this->d_err);
         return json_response($this->resp, $this->httpCode);

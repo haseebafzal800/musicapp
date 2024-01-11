@@ -38,7 +38,7 @@ class UsersController extends Controller
         }
         return json_response($this->resp, $this->httpCode);
     }
-
+    
     public function logout(Request $request)
     {
         if ($request->is('api*')) {
@@ -62,7 +62,7 @@ class UsersController extends Controller
         if ($validator->fails())
             $this->responsee(false, implode(',', $validator->errors()->all()));
         else{
-            $user = User::find($request->user_id);
+            $user = User::find(Auth::user()->id);
             if($user){
                 if ($user->license_key === $request->license_key) {
                     if($user->is_license_key_verified==true){

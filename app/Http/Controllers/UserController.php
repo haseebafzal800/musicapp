@@ -218,7 +218,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
-            'roles' => 'required'
+            // 'roles' => 'required'
         ]);
     
         $input = $request->all();
@@ -230,9 +230,9 @@ class UserController extends Controller
     
         $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        // DB::table('model_has_roles')->where('model_id',$id)->delete();
     
-        $user->assignRole($request->input('roles'));
+        // $user->assignRole($request->input('roles'));
     
         return redirect()->route('users.index')
                         ->with('success','User updated successfully');
@@ -289,5 +289,21 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success','User updated successfully');
     }
 }
-
+// hal e dil sunao tujh ko
+// dekh nashan zda kamar ko
+// phir dastan e mazdoor sunao tujh ko
+// pichley pehar jab khunak raton me
+// kabhi ghar ko laotney ka khayal aya
+// thehar gya, k pehley manaon tujh ko
+// teri yaad ki cheeseyn uth.ti rahi
+// me raton k qiseey kahan sunaon tujh ko
+// tu dard e dil se raha hamesha be-khabar
+// aor me pagal jhoom jhoom k gaon tujh ko
+// be-yaro madadgar a gherha jab arza e dil ne
+// me dil ko thama k kabhi to yaad aon tujh ko
+// teri yaad rahi  mera ek hamsafar
+// to samjhey k bhool paon tujh ko
+// tham dil ko k ab teri bari hey
+// ankheyn na mond, zakham dekh
+// dil o jigar cheer dikhaon tujh ko
 ?>

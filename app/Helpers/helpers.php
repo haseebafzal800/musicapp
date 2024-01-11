@@ -4,6 +4,8 @@ use App\Models\AppSettingsModel;
 
 function json_response($response = array(), $code = 201)
 {
+    // var_dump($response);die;
+    // return response(['a'=>'ahad','b'=>'bahadur','c'=>'chniot'],200);
     return response()->json($response, $code);
 }
 if (!function_exists('getAppSettings')) {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\AlbumsController;
 use App\Http\Controllers\Api\GenerousController;
+use App\Http\Controllers\Api\GeniusController;
 use App\Http\Controllers\Api\PlaylistsController;
 use App\Http\Controllers\Api\SongsController;
 use App\Http\Controllers\Api\PlaylistSongController;
@@ -28,12 +29,11 @@ Route::post('login', [UsersController::class, 'login']);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/logout', [UsersController::class, 'logout']);
-    //License Key Varification 
-    Route::post('/verify-license-key', [UsersController::class, 'verifyLicenseKey']);
-
-    //Album
+// Route::group(['middleware' => ['auth:sanctum']], function () {
+// });
+Route::group(['middleware' => ['auth:sanctum', 'license_key_verification']], function () {
+    Route::get('/logout', [UsersController::class, 'logout'])->withoutMiddleware(['license_key_verification']);
+    Route::post('/verify-license-key', [UsersController::class, 'verifyLicenseKey'])->withoutMiddleware(['license_key_verification']);
     Route::get('albums', [AlbumsController::class, 'index'])->name('album.list');
     Route::post('album-create', [AlbumsController::class, 'store'])->name('album.create');
     Route::get('album/{id}', [AlbumsController::class, 'edit'])->name('album.edit');
@@ -57,6 +57,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('song/{id}', [SongsController::class, 'edit'])->name('song.edit');
     Route::post('song-update/', [SongsController::class, 'update'])->name('song.update');
     Route::get('song-delete/{id}', [SongsController::class, 'delete'])->name('song.delete');
+    Route::get('genius-search', [GeniusController::class, 'search']);
+    Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
     //playlist Songs
 
     Route::get('/playlists/{playlistId}/songs', [PlaylistSongController::class, 'index']);
