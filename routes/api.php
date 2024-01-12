@@ -36,29 +36,29 @@ Route::post('login', [UsersController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [UsersController::class, 'logout'])->withoutMiddleware(['license_key_verification']);
     Route::post('/verify-license-key', [UsersController::class, 'verifyLicenseKey'])->withoutMiddleware(['license_key_verification']);
-    Route::get('albums', [AlbumsController::class, 'index'])->name('album.list');
-    Route::post('album-create', [AlbumsController::class, 'store'])->name('album.create');
-    Route::get('album/{id}', [AlbumsController::class, 'edit'])->name('album.edit');
-    Route::post('album-update/', [AlbumsController::class, 'update'])->name('album.update');
-    Route::get('album-delete/{id}', [AlbumsController::class, 'delete'])->name('album.delete');
+    Route::get('albums', [AlbumsController::class, 'index']);
+    Route::post('album-create', [AlbumsController::class, 'store']);
+    Route::get('album/{id}', [AlbumsController::class, 'edit']);
+    Route::post('album-update/', [AlbumsController::class, 'update']);
+    Route::get('album-delete/{id}', [AlbumsController::class, 'delete']);
     // Generous
-    Route::get('generouses', [GenerousController::class, 'index'])->name('generous.list');
-    Route::post('generous-create', [GenerousController::class, 'store'])->name('generous.create');
-    Route::get('generous/{id}', [GenerousController::class, 'edit'])->name('generous.edit');
-    Route::post('generous-update/', [GenerousController::class, 'update'])->name('generous.update');
-    Route::get('generous-delete/{id}', [GenerousController::class, 'delete'])->name('generous.delete');
+    Route::get('generouses', [GenerousController::class, 'index']);
+    Route::post('generous-create', [GenerousController::class, 'store']);
+    Route::get('generous/{id}', [GenerousController::class, 'edit']);
+    Route::post('generous-update/', [GenerousController::class, 'update']);
+    Route::get('generous-delete/{id}', [GenerousController::class, 'delete']);
     // Playlist
-    Route::get('playlists', [PlaylistsController::class, 'index'])->name('playlist.list');
-    Route::post('playlist-create', [PlaylistsController::class, 'store'])->name('playlist.create');
-    Route::get('playlist/{id}', [PlaylistsController::class, 'edit'])->name('playlist.edit');
-    Route::post('playlist-update/', [PlaylistsController::class, 'update'])->name('playlist.update');
-    Route::get('playlist-delete/{id}', [PlaylistsController::class, 'delete'])->name('playlist.delete');
+    Route::get('playlists', [PlaylistsController::class, 'index']);
+    Route::post('playlist-create', [PlaylistsController::class, 'store']);
+    Route::get('playlist/{id}', [PlaylistsController::class, 'edit']);
+    Route::post('playlist-update/', [PlaylistsController::class, 'update']);
+    Route::get('playlist-delete/{id}', [PlaylistsController::class, 'delete']);
     // Songs
-    Route::get('songs/{searchStr?}', [SongsController::class, 'index'])->name('song.list');
-    Route::post('song-create', [SongsController::class, 'store'])->name('song.create');
-    Route::get('song/{id}', [SongsController::class, 'edit'])->name('song.edit');
-    Route::post('song-update/', [SongsController::class, 'update'])->name('song.update');
-    Route::get('song-delete/{id}', [SongsController::class, 'delete'])->name('song.delete');
+    Route::get('songs/{searchStr?}', [SongsController::class, 'index']);
+    Route::post('song-create', [SongsController::class, 'store']);
+    Route::get('song/{id}', [SongsController::class, 'edit']);
+    Route::post('song-update/', [SongsController::class, 'update']);
+    Route::get('song-delete/{id}', [SongsController::class, 'delete']);
     //playlist Songs
     
     Route::get('/playlists/{playlistId}/songs', [PlaylistSongController::class, 'index']);
