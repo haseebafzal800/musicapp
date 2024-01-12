@@ -1,5 +1,7 @@
 <?php
-
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, Accept,charset,boundary,Content-Length');
+header('Access-Control-Allow-Origin: *');
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\AlbumsController;
 use App\Http\Controllers\Api\GenerousController;
@@ -68,8 +70,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/recently-played', [RecentlyPlayedController::class, 'index']);
     Route::get('/recently-played/clear/{id?}', [RecentlyPlayedController::class, 'deleteRecentPlayed']);
     
-    Route::middleware(['cors'])->group(function () {
-        Route::get('genius-search', [GeniusController::class, 'search']);
-        Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
-    });
+    Route::get('genius-search', [GeniusController::class, 'search']);
+    Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
+    // Route::middleware(['cors'])->group(function () {
+    //     Route::get('genius-search', [GeniusController::class, 'search']);
+    //     Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
+    // });
 });
