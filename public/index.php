@@ -19,13 +19,6 @@ define('LARAVEL_START', microtime(true));
 | instead of starting the framework, which could cause an exception.
 |
 */
-// $allowedOrigins = ['http://localhost','http://localhost:8100','http://localhost:8101'];
-$origin = $_SERVER['HTTP_ORIGIN'];
-header("Access-Control-Allow-Origin:$origin");
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
-ob_start();
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
