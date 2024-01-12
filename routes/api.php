@@ -72,7 +72,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     // Route::get('genius-search', [GeniusController::class, 'search']);
     // Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
-    Route::middleware(['cors'])->group(function () {
+    // Route::middleware(['cors'])->group(function () {
+    //     Route::get('genius-search', [GeniusController::class, 'search']);
+    //     Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
+    // });
+    Route::group(['middleware' => 'cors'], function () {
         Route::get('genius-search', [GeniusController::class, 'search']);
         Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
     });

@@ -23,7 +23,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\GlobalDataMiddleware::class,
-        // \App\Http\Middleware\CorsMiddleware::class,
+        \App\Http\Middleware\CorsMiddleware::class,
     ];
 
     /**
@@ -75,5 +75,6 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'license_key_verification' => \App\Http\Middleware\LicenseKeyVerificationMiddleware::class,
+        'cors' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 }
