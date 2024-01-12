@@ -57,10 +57,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('song/{id}', [SongsController::class, 'edit'])->name('song.edit');
     Route::post('song-update/', [SongsController::class, 'update'])->name('song.update');
     Route::get('song-delete/{id}', [SongsController::class, 'delete'])->name('song.delete');
-    Route::get('genius-search', [GeniusController::class, 'search']);
-    Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
     //playlist Songs
-
+    
     Route::get('/playlists/{playlistId}/songs', [PlaylistSongController::class, 'index']);
     Route::post('/playlists/songs/create', [PlaylistSongController::class, 'store']);
     Route::get('/playlists/{playlistId}/songs/{songId}', [PlaylistSongController::class, 'delete']);
@@ -69,4 +67,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/recently-played', [RecentlyPlayedController::class, 'store']);
     Route::get('/recently-played', [RecentlyPlayedController::class, 'index']);
     Route::get('/recently-played/clear/{id?}', [RecentlyPlayedController::class, 'deleteRecentPlayed']);
+    
+    Route::middleware(['cors'])->group(function () {
+        Route::get('genius-search', [GeniusController::class, 'search']);
+        Route::get('genius-song/{songId}', [GeniusController::class, 'getSingleGeniusSong']);
+    });
 });
